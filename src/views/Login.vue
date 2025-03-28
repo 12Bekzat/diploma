@@ -18,7 +18,6 @@
           </Divider>
           <InputText
             v-model="username"
-            name="username"
             type="text"
             placeholder="Имя пользователя"
             style="width: 100%"
@@ -32,8 +31,8 @@
             :input-style="{ width: '100%' }"
           />
           <Message v-if="message" severity="error" size="small" variant="simple">{{ message }}</Message>
-          <RouterLink to="/register" style="width: 100%; text-decoration: none; text-align: end;">Нет аккаунта?</RouterLink>
-          <Button type="submit" label="Submit" @click="submit" />
+          <RouterLink to="/register" style="width: 100%; text-decoration: none; text-align: end; color: cornflowerblue; margin: 12px 0;">Нет аккаунта?</RouterLink>
+          <Button type="submit" label="Войти" @click="submit" />
         </div>
       </template>
     </Card>

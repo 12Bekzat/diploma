@@ -5,7 +5,7 @@ import { ref } from "vue"
 export const useUser = () => {
     const users = [
         {
-            id: 0,
+            id: 1,
             firstName: 'User',
             secondName: 'User',
             roles: ['USER'],
@@ -14,7 +14,7 @@ export const useUser = () => {
             password: 'user123'
         },
         {
-            id: 1,
+            id: 0,
             firstName: 'Admin',
             secondName: 'Admin',
             roles: ['ADMIN'],
