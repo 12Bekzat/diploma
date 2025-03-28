@@ -32,6 +32,7 @@
             :input-style="{ width: '100%' }"
           />
           <Message v-if="message" severity="error" size="small" variant="simple">{{ message }}</Message>
+          <RouterLink to="/register" style="width: 100%; text-decoration: none; text-align: end;">Нет аккаунта?</RouterLink>
           <Button type="submit" label="Submit" @click="submit" />
         </div>
       </template>
@@ -42,7 +43,7 @@
 import { useUser } from "@/composables/useUser";
 import { Button, Card, Divider, InputText, Message, Password } from "primevue";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 
 const username = ref("");
 const password = ref("");
