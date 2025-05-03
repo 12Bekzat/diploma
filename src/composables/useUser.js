@@ -3,7 +3,7 @@ import { storeToRefs } from "pinia"
 import { ref } from "vue"
 
 export const useUser = () => {
-    const users = [
+    const users = ref([
         {
             id: 1,
             firstName: 'User',
@@ -22,13 +22,13 @@ export const useUser = () => {
             username: 'admin',
             password: 'admin123'
         },
-    ]
+    ])
 
     const mainStore = useMainStore()
     const { currentUser } = storeToRefs(mainStore)
 
     const login = (email, password) => {
-        const user = users.find(user => user.username === email && user.password === password)
+        const user = users.value.find(user => user.username === email && user.password === password)
         
         if (user) {
             currentUser.value = user
@@ -54,6 +54,6 @@ export const useUser = () => {
     }
 
     return {
-        login, register
+        login, register, users
     }
 }

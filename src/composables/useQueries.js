@@ -44,17 +44,13 @@ export const useQueries = () => {
     },
   ];
 
-  const getPaged = ({ filter, orders }, { serviceName }) => {
-    const items = requests.filter(
-      (item) => item.userId == currentUser.value.id
-    );
-    console.log("items", items, currentUser.value.id);
-
+  const getPaged = ({ serviceName, methodName }) => {
+    
     const response = {
-      result: items,
-      error: items.length ? false : true,
-      message: items.length ? "" : "User not found",
-      code: items.length ? 200 : 400,
+      result: requests,
+      error: requests.length ? false : true,
+      message: requests.length ? "" : "User not found",
+      code: requests.length ? 200 : 400,
     };
     return response;
   };

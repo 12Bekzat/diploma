@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@primeuix/utils": "^0.5.3",
     "@primevue/forms": "^4.3.3",
     "@primevue/themes": "^4.3.3",
     "chart.js": "^4.4.8",

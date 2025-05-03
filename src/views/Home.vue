@@ -1,22 +1,25 @@
 <template>
   <div class="main">
-    <p
-      style="
-        width: 100%;
-        max-width: 1600px;
-        text-align: start;
-        font-size: 24px;
-        font-weight: 500;
-      "
-    >
-      График моих запросов
-    </p>
-    <Chart
-      type="bar"
-      style="width: 1600px"
-      :data="chartData"
-      :options="chartOptions"
-    />
+    <div class="blocks">
+      <div class="blocks__item" @click="() => { router.push({ name: 'Templates' }) }">
+        <div class="blocks__flex">
+          <i class="pi pi-file-word"></i>
+        </div>
+        <div class="blocks__title">Справка с место учебы</div>
+      </div>
+      <div class="blocks__item" @click="() => { router.push({ name: 'Templates' }) }">
+        <div class="blocks__flex">
+          <i class="pi pi-cog"></i>
+        </div>
+        <div class="blocks__title">Справка с места работы</div>
+      </div>
+      <div class="blocks__item" @click="() => { router.push({ name: 'Templates' }) }">
+        <div class="blocks__flex">
+          <i class="pi pi-compass"></i>
+        </div>
+        <div class="blocks__title">Заявление на отпуск</div>
+      </div>
+    </div>
     <div class="cards">
       <Card>
         <template #title>Ваши запросы</template>
@@ -64,12 +67,15 @@
 <script setup>
 import { useQueries } from "@/composables/useQueries";
 import moment from "moment";
-import { Button, Card, Column, DataTable, Tag } from "primevue";
+import { Button, Card, Column, DataTable, Tag, useToast } from "primevue";
 import Chart from "primevue/chart";
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 
 const items = ref([]);
 const { getPaged } = useQueries();
+const toast = useToast()
+const router = useRouter()
 
 const getTag = (status) => {
   const answer = {
