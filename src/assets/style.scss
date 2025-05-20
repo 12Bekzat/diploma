@@ -1,10 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 
 :root {
-  --primary-color: #b1040e;         /* твой новый цвет */
-  --primary-color-text: #ffffff;    /* цвет текста на кнопках */
+  --primary-color: #b1040e; /* твой новый цвет */
+  --primary-color-text: #ffffff; /* цвет текста на кнопках */
 }
 
 body {
@@ -44,30 +44,27 @@ body {
   align-items: center;
   min-height: 100vh;
   margin: 0;
-  background: linear-gradient(135deg, #2B2B2B, #4F4F4F, #B0B0B0, #D80027);
+  background: linear-gradient(135deg, #2b2b2b, #4f4f4f, #b0b0b0, #d80027);
   background-size: 400% 400%;
   animation: gradientShift 20s ease infinite;
   color: #f5f5f5;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 
   &__content {
     display: flex;
     width: 100%;
+    gap: 12px;
     padding: 30px;
     align-items: center;
     flex-direction: column;
 
     input {
-      margin-top: 12px;
-
       &:first-of-type {
         margin-top: 0;
       }
     }
 
     div.p-password {
-      margin-top: 12px;
-
       &:first-of-type {
         margin-top: 0;
       }
@@ -123,6 +120,32 @@ body {
     position: absolute;
     padding: 10px;
     transition: 0.3s;
+
+    &:hover {
+      filter: brightness(0.7);
+      transition: 0.3s;
+      cursor: pointer;
+
+      & + .edit {
+        opacity: 1;
+        transition: 0.3s;
+      }
+    }
+  }
+
+  &__avatar {
+    position: absolute;
+    padding: 10px;
+    transition: 0.3s;
+    background: gray;
+    color: white;
+    font-size: 100px;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &:hover {
       filter: brightness(0.7);
@@ -201,18 +224,28 @@ body {
   width: 100%;
   padding: 10px 12px;
   cursor: pointer;
-  transition: .3s;
+  transition: 0.3s;
 
   &:hover {
     background: #00000018;
-    transition: .3s;
-  } 
+    transition: 0.3s;
+  }
+
+  &.active {
+    background: #ecffd0;
+  }
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .chat {
@@ -221,23 +254,44 @@ body {
   width: 100%;
   height: 100%;
   align-items: center;
-  
+
   .messenger {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    padding: 0 8px 16px;
+    padding: 16px 8px 16px;
     flex-grow: 1;
     gap: 8px;
+    background-image: url("@/assets/bg-pattern.png");
+    background-size: 300px 300px; /* или auto для паттерна */
+    background-repeat: repeat;
+    background-color: #f9f9f9;
 
     &__text {
       padding: 8px;
       border-radius: 5px;
       background: rgb(236, 255, 208);
+      position: relative;
+      padding-right: 50px;
 
       &.author {
         align-self: flex-end;
+        padding-left: 50px;
+        padding-right: 0px;
+
+        & .time {
+          bottom: 8px;
+          left: 10px;
+        }
+      }
+
+      & .time {
+        position: absolute;
+        font-size: 11px;
+        color: gray;
+        bottom: 8px;
+        right: 10px;
       }
     }
   }
@@ -251,46 +305,46 @@ body {
 }
 
 .blocks {
- width: 100%;
- display: flex;
- justify-content: space-around;
- align-items: center;
-
- &__item {
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  justify-content: space-around;
   align-items: center;
-  cursor: pointer;
-  transition: .3s;
 
-  &:hover {
-    transition: .3s;
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      transition: 0.3s;
+    }
   }
- }
 
- &__flex {
-  width: 200px;
-  height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 20%;
-  border: 10px solid #f43f5e;
+  &__flex {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20%;
+    border: 10px solid #f43f5e;
 
-  i {
-    font-size: 56px;
-    color: #f43f5e;
-    text-decoration: none;
+    i {
+      font-size: 56px;
+      color: #f43f5e;
+      text-decoration: none;
+    }
   }
- }
 
- &__title {
-  font-size: 16px;
+  &__title {
+    font-size: 16px;
     text-decoration: none;
     color: black;
     font-weight: 600;
- }
+  }
 }
 
 footer {
@@ -366,11 +420,53 @@ footer {
     gap: 6px;
     border-radius: 5px;
     align-items: center;
-    padding: 5px;
-    border: 1px solid #f43f5e;
 
     i {
       color: green;
+    }
+  }
+}
+
+.modal {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px;
+}
+
+.overlay {
+  z-index: 1000;
+  position: absolute;
+  top: calc(100% + 10px);
+  background: white;
+  border: 1px solid rgb(214, 214, 214);
+  width: 250px;
+  border-radius: 8px;
+  padding: 5px;
+
+  &.hide {
+    display: none;
+  }
+}
+
+.texts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &__item {
+    width: 100%;
+    padding: 8px 5px;
+    transition: .3s;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    border-radius: 5px;
+
+    &:hover {
+      background: rgb(243, 243, 243);
+      transition: .3s;
     }
   }
 }

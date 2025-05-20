@@ -1,4 +1,5 @@
 import { useMainStore } from "@/stores/mainStore";
+import { useApiFetch } from "@/utils/apiFetch";
 import { storeToRefs } from "pinia";
 
 export const useQueries = () => {
@@ -44,62 +45,103 @@ export const useQueries = () => {
     },
   ];
 
-  const getPaged = ({ serviceName, methodName }) => {
-    
-    const response = {
-      result: requests,
-      error: requests.length ? false : true,
-      message: requests.length ? "" : "User not found",
-      code: requests.length ? 200 : 400,
-    };
-    return response;
+  const getPaged = async ({ serviceName }) => {
+    const { makeRequest } = useApiFetch()
+
+    return await makeRequest(`/${serviceName}/getPaged`)
   };
 
-  const create = ({ item }, { serviceName }) => {
-    const response = {
-      result: null,
-      error: true,
-      message: "Server is available",
-      code: 500,
-    };
-    return response;
+  const getGeneratedPDF = async ({ id }) => {
+    const { makeFileRequest } = useApiFetch()
+
+    return await makeFileRequest(`/documents/${id}/generate`)
+  };
+  
+  const getMyRequests = async ({ id }) => {
+    const { getRequest } = useApiFetch()
+
+    return await getRequest(`/documents/getPaged/${id}`)
   };
 
-  const update = ({ item }, { serviceName }) => {
-    const response = {
-      result: null,
-      error: true,
-      message: "Server is available",
-      code: 500,
-    };
-    return response;
+  const getRequests = async () => {
+    const { makeRequest } = useApiFetch()
+
+    return await makeRequest(`/documents/getAll`)
   };
 
-  const remove = ({ item }, { serviceName }) => {
-    const response = {
-      result: null,
-      error: true,
-      message: "Server is available",
-      code: 500,
-    };
-    return response;
+  const getById = async ({ id, serviceName }) => {
+    const { makeRequest } = useApiFetch()
+
+    return await makeRequest(`/${serviceName}/getById`, id)
   };
 
-  const createFile = ({ item }, { serviceName }) => {
-    const response = {
-      result: null,
-      error: true,
-      message: "Server is available",
-      code: 500,
-    };
-    return response;
-  };
+  const update = async ({ item, serviceName }) => {
+    const { makeRequest } = useApiFetch()
+
+    return await makeRequest(`/${serviceName}/update`, item)
+  }
+  
+  const create = async ({ item, serviceName }) => {
+    const { makeRequest } = useApiFetch()
+
+    return await makeRequest(`/${serviceName}/create`, item)
+  }
+  
+  const remove = async ({ id, serviceName }) => {
+    const { makeRequest } = useApiFetch()
+
+    return await makeRequest(`/${serviceName}/remove`, id)
+  }
+
+  const sendRequest = async ({ requesterId, templateId }, extra = '') => {
+    const { makeRequest } = useApiFetch()
+
+    const item  = {
+      requesterId, templateId
+    }
+
+    if(extra) item.extra = extra
+
+    return await makeRequest(`/documents/request`, item)
+  }
+
+  const getMessages = async ({ receiverId, senderId }) => {
+    const { makeRequest } = useApiFetch()
+
+    return await makeRequest('/messages/getPaged', { senderId, receiverId })
+  }
+
+  const sendMessage = async ({ receiverId, senderId, text }) => {
+    const { makeRequest } = useApiFetch()
+
+    return await makeRequest('/messages/send', { receiverId, senderId, text })
+  }
+
+  const approveDocument = async ({ id, approverId }) => {
+    const { makeRequest } = useApiFetch()
+
+    await makeRequest(`/documents/${id}/approve?approverId=${approverId}`)
+  }
+
+  const rejectDocument = async ({ id, reason }) => {
+    const { makeRequest } = useApiFetch()
+
+    await makeRequest(`/documents/${id}/reject?reason=${reason}`)
+  }
 
   return {
     getPaged,
-    create,
+    getById,
     update,
+    create,
     remove,
-    createFile
+    sendRequest,
+    getMyRequests,
+    getGeneratedPDF,
+    getMessages,
+    sendMessage,
+    getRequests,
+    approveDocument,
+    rejectDocument
   };
 };

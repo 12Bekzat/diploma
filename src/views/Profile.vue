@@ -4,44 +4,37 @@
       <template #header>
         <div class="avatar">
           <Image
-            :src="currentUser?.logoSrc"
+            v-if="currentUser?.url"
+            :src="currentUser?.url"
             alt="Image"
             width="250"
             class="avatar__img"
             image-style="height: 250px; border-radius: 50%;"
           />
-          <i
-            class="pi pi-pencil edit"
-            style="cursor: pointer; color: white; font-size: 20px"
-          ></i>
+          <div
+            v-else
+            class="avatar__avatar"
+          >{{ currentUser.fullName ? currentUser.fullName[0] : 'A' }}</div>
         </div>
       </template>
       <template #title>
         <div class="avatar__title">
-          {{ currentUser.firstName + " " + currentUser.secondName }}
-          <i class="pi pi-pencil" style="cursor: pointer"></i>
+          {{ currentUser.fullName || 'Имя пользователя'  }}
+          <Button icon="pi pi-pencil" severity="secondary" @click="$router.push({name: 'EditMe'})"/>
         </div>
       </template>
       <template #subtitle
         ><div class="avatar__subtitle">
-          {{ currentUser.roles[0] }}
+          {{ getRoles() }}
         </div>
-        <Message severity="error" variant="simple" size="small"
-          >Необходимо подтвердить эцп ключом!</Message
-        >
       </template>
       <template #content>
-        <p class="m-0">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore
-          sed consequuntur error repudiandae numquam deserunt quisquam repellat
-          libero asperiores earum nam nobis, culpa ratione quam perferendis
-          esse, cupiditate neque quas!
-        </p>
+        <p class="m-0" style="display: flex; align-items: center; gap: 8px;">Email: {{ currentUser.email }}</p>
+        <p class="m-0">Все действия подтверждаются вашей электронной подписью, а документы проходят проверку перед выдачей.</p>
       </template>
       <template #footer>
         <div style="display: flex; width: 100%; gap: 12px">
           <Button label="Выйти" severity="danger" outlined class="w-full" @click="signOut" />
-          <Button label="Подтвердить" class="w-full" />
         </div>
       </template>
     </Card>
@@ -50,15 +43,20 @@
 <script setup>
 import { useMainStore } from "@/stores/mainStore";
 import { storeToRefs } from "pinia";
-import { Badge, Button, Card, Image, Message } from "primevue";
+import { Avatar, Badge, Button, Card, Image, Message } from "primevue";
 import { useRouter } from "vue-router";
 
 const mainStore = useMainStore();
 const { currentUser } = storeToRefs(mainStore);
 const router = useRouter();
 
+const getRoles = () => {
+  return currentUser.value.roles.map(role => role.name === 'ROLE_ADMIN' ? 'Админстратор' : role.name === 'ROLE_TEACHER' ? 'Преподаватель' : 'Студент').join(', ')
+}
+
 const signOut = () => {
   currentUser.value = null;
+  localStorage.removeItem('jwt-token')
   router.push({ name: "Login" });
 };
 </script>

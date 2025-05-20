@@ -7,10 +7,28 @@
       </TabList>
       <TabPanels>
         <TabPanel :value="0">
-          <Table :items="users.filter(user => user.roles.includes('USER'))" :columns="columns" v-model:filters="filters" />
+          <Table
+            :items="
+              users.filter((user) =>
+                user.roles.find((role) => role.name === 'ROLE_STUDENT')
+              )
+            "
+            :columns="columns"
+            v-model:filters="filters"
+            @on-remove="removeUser"
+          />
         </TabPanel>
         <TabPanel :value="1">
-          <Table :items="users.filter(user => user.roles.includes('ADMIN'))" :columns="columns" v-model:filters="filters" />
+          <Table
+            :items="
+              users.filter((user) =>
+                user.roles.find((role) => role.name === 'ROLE_TEACHER')
+              )
+            "
+            :columns="columns"
+            v-model:filters="filters"
+            @on-remove="removeUser"
+          />
         </TabPanel>
       </TabPanels>
     </Tabs>
@@ -23,16 +41,16 @@ import { useQueries } from "@/composables/useQueries";
 import { onMounted, ref } from "vue";
 
 const users = ref([]);
-const tabValue = ref(0)
-const { getPaged } = useQueries();
+const tabValue = ref(0);
+const { getPaged, remove } = useQueries();
 const columns = ref([
   {
-    field: "firstName",
-    header: "Имя",
+    field: "fullName",
+    header: "ФИО",
   },
   {
-    field: "secondName",
-    header: "Фамилия",
+    field: "email",
+    header: "Email",
   },
   {
     field: "username",
@@ -41,37 +59,37 @@ const columns = ref([
 ]);
 const filters = ref({
   global: { value: null, matchMode: "CONTAINS" },
-  firstName: { operator: 'AND', constraints: [{ value: null, matchMode: 'STARTS_WITH' }] },
-  secondName: { operator: 'AND', constraints: [{ value: null, matchMode: 'STARTS_WITH' }] },
-  username: { operator: 'AND', constraints: [{ value: null, matchMode: 'STARTS_WITH' }] },
+  firstName: {
+    operator: "AND",
+    constraints: [{ value: null, matchMode: "STARTS_WITH" }],
+  },
+  secondName: {
+    operator: "AND",
+    constraints: [{ value: null, matchMode: "STARTS_WITH" }],
+  },
+  username: {
+    operator: "AND",
+    constraints: [{ value: null, matchMode: "STARTS_WITH" }],
+  },
 });
 
-onMounted(() => {
-  users.value = [
-    {
-      id: 1,
-      firstName: "User",
-      secondName: "User",
-      roles: ["USER"],
-      logoSrc:
-        "https://99designs-blog.imgix.net/blog/wp-content/uploads/2022/06/Starbucks_Corporation_Logo_2011.svg-e1657703028844.png?auto=format&q=60&fit=max&w=930",
-      username: "user12",
-      password: "user123",
-    },
-    {
-      id: 0,
-      firstName: "Admin",
-      secondName: "Admin",
-      roles: ["ADMIN"],
-      logoSrc:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ584acfWMPuHP7nRm1z5_Yt5zLmKyGrANsQ&s",
-      username: "admin",
-      password: "admin123",
-    },
-  ];
+const removeUser = async (data) => {
+  const id = data?.id
+  if(!id) return
+
+  try {
+    await remove({ id: { id }, serviceName: 'users' })
+  } finally {
+    await getUsers()
+  }
+}
+
+onMounted(async () => {
+  await getUsers();
 });
 
-const getUsers = () => {
-  users.value = getPaged({ filter: {}, orders: [] }, { serviceName: "User" });
+const getUsers = async () => {
+  users.value = await getPaged({ serviceName: "users" });
+  console.log('users', users.value)
 };
 </script>

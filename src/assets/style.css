@@ -55,7 +55,7 @@ body {
           align-items: center;
   min-height: 100vh;
   margin: 0;
-  background: linear-gradient(135deg, #2B2B2B, #4F4F4F, #B0B0B0, #D80027);
+  background: linear-gradient(135deg, #2b2b2b, #4f4f4f, #b0b0b0, #d80027);
   background-size: 400% 400%;
   -webkit-animation: gradientShift 20s ease infinite;
           animation: gradientShift 20s ease infinite;
@@ -67,6 +67,7 @@ body {
   display: -ms-flexbox;
   display: flex;
   width: 100%;
+  gap: 12px;
   padding: 30px;
   -webkit-box-align: center;
       -ms-flex-align: center;
@@ -76,14 +77,8 @@ body {
       -ms-flex-direction: column;
           flex-direction: column;
 }
-.form__content input {
-  margin-top: 12px;
-}
 .form__content input:first-of-type {
   margin-top: 0;
-}
-.form__content div.p-password {
-  margin-top: 12px;
 }
 .form__content div.p-password:first-of-type {
   margin-top: 0;
@@ -163,6 +158,39 @@ body {
   cursor: pointer;
 }
 .avatar__img:hover + .edit {
+  opacity: 1;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+.avatar__avatar {
+  position: absolute;
+  padding: 10px;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  background: gray;
+  color: white;
+  font-size: 100px;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.avatar__avatar:hover {
+  -webkit-filter: brightness(0.7);
+          filter: brightness(0.7);
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.avatar__avatar:hover + .edit {
   opacity: 1;
   -webkit-transition: 0.3s;
   transition: 0.3s;
@@ -261,6 +289,9 @@ body {
   -webkit-transition: 0.3s;
   transition: 0.3s;
 }
+.user.active {
+  background: #ecffd0;
+}
 
 @-webkit-keyframes gradientShift {
   0% {
@@ -304,27 +335,46 @@ body {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
-  -webkit-box-direction: reverse;
-      -ms-flex-direction: column-reverse;
-          flex-direction: column-reverse;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
   width: 100%;
-  padding: 0 8px 16px;
+  padding: 16px 8px 16px;
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
   gap: 8px;
+  background-image: url("@/assets/bg-pattern.png");
+  background-size: 300px 300px; /* или auto для паттерна */
+  background-repeat: repeat;
+  background-color: #f9f9f9;
 }
 .chat .messenger__text {
   padding: 8px;
   border-radius: 5px;
   background: rgb(236, 255, 208);
+  position: relative;
+  padding-right: 50px;
 }
 .chat .messenger__text.author {
   -ms-flex-item-align: end;
       align-self: flex-end;
+  padding-left: 50px;
+  padding-right: 0px;
+}
+.chat .messenger__text.author .time {
+  bottom: 8px;
+  left: 10px;
+}
+.chat .messenger__text .time {
+  position: absolute;
+  font-size: 11px;
+  color: gray;
+  bottom: 8px;
+  right: 10px;
 }
 .chat .manage {
   width: 100%;
@@ -472,9 +522,60 @@ footer .footer-bottom {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 5px;
-  border: 1px solid #f43f5e;
 }
 .notifs__item i {
   color: green;
+}
+
+.modal {
+  width: 300px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 16px;
+  padding: 12px;
+}
+
+.overlay {
+  z-index: 1000;
+  position: absolute;
+  top: calc(100% + 10px);
+  background: white;
+  border: 1px solid rgb(214, 214, 214);
+  width: 250px;
+  border-radius: 8px;
+  padding: 5px;
+}
+.overlay.hide {
+  display: none;
+}
+
+.texts {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 6px;
+}
+.texts__item {
+  width: 100%;
+  padding: 8px 5px;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+  border-radius: 5px;
+}
+.texts__item:hover {
+  background: rgb(243, 243, 243);
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
 }/*# sourceMappingURL=style.css.map */

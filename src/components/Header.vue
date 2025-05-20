@@ -41,7 +41,7 @@
         <Search />
         <Notification />
         <SplitButton :model="menuItems" text>
-          <Avatar :image="currentUser.logoSrc" shape="circle" @click="toggle" />
+          <Avatar :label="currentUser?.fullName ? currentUser.fullName[0] : 'A'" :image="currentUser?.url" shape="circle" />
         </SplitButton>
       </div>
     </template>
@@ -71,7 +71,7 @@ const menu = ref();
 const router = useRouter();
 
 const adminRole = computed(() => {
-  return currentUser.value.roles.find((role) => role === "ADMIN") != null;
+  return currentUser.value?.roles.find((role) => role.name === "ROLE_ADMIN") != null;
 });
 
 const menuItems = [
@@ -85,14 +85,11 @@ const menuItems = [
     label: "Выйти",
     command: () => {
       currentUser.value = null;
+      localStorage.removeItem('jwt_token')
       router.push({ name: "Login" });
     },
   },
 ];
-
-const toggle = (event) => {
-  menu.value.toggle(event);
-};
 
 const items = ref([
   {

@@ -1,4 +1,5 @@
 import { useMainStore } from "@/stores/mainStore"
+import { useApiFetch } from "@/utils/apiFetch"
 import { storeToRefs } from "pinia"
 import { ref } from "vue"
 
@@ -27,33 +28,27 @@ export const useUser = () => {
     const mainStore = useMainStore()
     const { currentUser } = storeToRefs(mainStore)
 
-    const login = (email, password) => {
-        const user = users.value.find(user => user.username === email && user.password === password)
-        
-        if (user) {
-            currentUser.value = user
-        }
+    const login = async (username, password) => {
+        const { anyRequest } = useApiFetch()
 
-        const response = {
-            result: user,
-            error: user ? false : true,
-            message: user ? '' : 'User not found',
-            code: user ? 200 : 400
+        const response = await anyRequest('/login', { username, password })
+        if (!response?.token) {
+            console.log('Error in login when login syystem');
+            
+            return false
         }
-        return response
+        localStorage.setItem('jwt_token', response?.token)
+        return true
     }
 
-    const register = (user) => {
-        const response = {
-            result: null,
-            error: true,
-            message: 'Server is available',
-            code: 500
-        }
-        return response
+    const getMe = async () => {
+        const { makeRequest } = useApiFetch()
+
+        const response = await makeRequest('/users/me')
+        currentUser.value = response
     }
 
     return {
-        login, register, users
+        login, getMe
     }
 }

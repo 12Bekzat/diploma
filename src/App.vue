@@ -1,17 +1,21 @@
 <script setup>
-import { RouterView, useRouter } from "vue-router";
+import { RouterView, useRoute, useRouter } from "vue-router";
 import Header from "./components/Header.vue";
 import { useMainStore } from "./stores/mainStore";
 import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { updatePrimaryPalette } from "@primevue/themes";
 import EventBus from '@/app/AppEventBus'
 import Footer from "./components/Footer.vue";
+import { useUser } from "./composables/useUser";
 
 const mainStore = useMainStore();
 const { currentUser } = storeToRefs(mainStore);
+const { getMe } = useUser()
+const route = useRoute()
+const router = useRouter()
 
-onMounted(() => {
+onMounted(async () => {
   const color = {
     name: "rose",
     palette: {
@@ -31,15 +35,31 @@ onMounted(() => {
 
   updatePrimaryPalette(color.palette)
   EventBus.emit('theme-palette-change')
+
+  console.log(checkSpecialPage.value, {...currentUser.value});
+  await getMe()
+  console.log(checkSpecialPage.value, currentUser.value);
+  
+  if (currentUser.value && checkSpecialPage.value) {
+    console.log('router to Home');
+    router.push({ name: 'Home' })
+  }
 });
+
+const specialPages = ['login', 'register']
+
+const checkSpecialPage = computed(() => {
+  const res = specialPages.filter(page => route.path.includes(page))
+  return res.length > 0
+})
 </script>
 
 <template>
-  <Header v-if="currentUser" />
+  <Header v-if="!checkSpecialPage" />
 
   <RouterView />
 
-  <Footer />
+  <Footer v-if="!checkSpecialPage"/>
 </template>
 
 <style scoped></style>

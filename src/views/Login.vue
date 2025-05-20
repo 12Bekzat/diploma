@@ -4,18 +4,6 @@
       <template #content>
         <div class="form__content">
           <div class="form__title">Войти</div>
-          <div class="form__tags">
-            <Card style="cursor: pointer">
-              <template #content>
-                <div style="display: flex; align-items: center">
-                  <i class="pi pi-google" style="font-size: 28px"></i>
-                </div>
-              </template>
-            </Card>
-          </div>
-          <Divider style="width: 100%" align="center" type="solid">
-            или
-          </Divider>
           <InputText
             v-model="username"
             type="text"
@@ -31,7 +19,6 @@
             :input-style="{ width: '100%' }"
           />
           <Message v-if="message" severity="error" size="small" variant="simple">{{ message }}</Message>
-          <RouterLink to="/register" style="width: 100%; text-decoration: none; text-align: end; color: cornflowerblue; margin: 12px 0;">Нет аккаунта?</RouterLink>
           <Button type="submit" label="Войти" @click="submit" />
         </div>
       </template>
@@ -48,19 +35,17 @@ const username = ref("");
 const password = ref("");
 const message = ref()
 
-const { login } = useUser()
+const { login, getMe } = useUser()
 const router = useRouter()
 
-const submit = () => {
-    const response = login(username.value, password.value)
-    console.log(response);
-    
-    if (response.code === 200) {
-        message.value = ''
-        router.push({ name: 'Home' })
-    } else {
-        message.value = response.message
+const submit = async () => {
+    const resp = await login(username.value, password.value)
+    if (!resp) {
+      message.value = 'Имя полльзователя или пароль неверны!'
+      return
     }
+    await getMe()
+    router.push({ name: 'Home' })
 }
 </script>
 

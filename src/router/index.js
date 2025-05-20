@@ -3,6 +3,8 @@ import { useMainStore } from '@/stores/mainStore'
 import Confirm from '@/views/Admin/Confirm/Confirm.vue'
 import Users from '@/views/Admin/Users/Users.vue'
 import CreateRequest from '@/views/CreateRequest.vue'
+import CreateUser from '@/views/CreateUser.vue'
+import EditMe from '@/views/EditMe.vue'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import Messenger from '@/views/Messenger.vue'
@@ -64,6 +66,18 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/edit-me',
+      name: 'EditMe',
+      component: EditMe,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/create-user',
+      name: 'CreateUser',
+      component: CreateUser,
+      meta: { requiresAuth: true, isAdmin: true }
+    },
+    {
       path: '/users',
       name: 'Users',
       component: Users,
@@ -87,8 +101,10 @@ router.beforeEach((to, from, next) => {
   const mainStore = useMainStore()
   const { currentUser } = storeToRefs(mainStore)
 
-  if (to.meta.requiresAuth && !currentUser.value) router.push({ name: 'Login' })
-  if (to.meta.isAdmin  && !currentUser.value && !currentUser.value?.roles?.find(role => role === 'ADMIN')) router.push({ name: 'Home' })
+  const token = localStorage.getItem('jwt_token')
+
+  if (to.meta.requiresAuth && !token) router.push({ name: 'Login' })
+  if (to.meta.isAdmin  && !token && !currentUser.value?.roles?.find(role => role.name === 'ROLE_ADMIN')) router.push({ name: 'Home' })
   else next()
 })
 
